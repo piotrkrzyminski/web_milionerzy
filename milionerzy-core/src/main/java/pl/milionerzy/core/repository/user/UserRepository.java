@@ -4,12 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pl.milionerzy.model.user.UserModel;
 
 /**
- * @author Piotr Krzyminski
- *
  * Repository for {@link UserModel}.
+ *
+ * @author Piotr Krzyminski
  */
 public interface UserRepository extends JpaRepository<UserModel, Long> {
 
     UserModel findByUsername(String username);
-
 }

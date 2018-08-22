@@ -10,9 +10,9 @@ import pl.milionerzy.core.services.user.UserService;
 import pl.milionerzy.model.user.UserModel;
 
 /**
- * @author Piotr Krzyminski
- *
  * Default implementation of {@link UserService}.
+ *
+ * @author Piotr Krzyminski
  */
 @Service
 public class DefaultUserService implements UserService {
@@ -31,10 +31,10 @@ public class DefaultUserService implements UserService {
         LOG.debug("Checking if user with name " + userModel.getUsername() + " already exists in datasource");
 
         if (isUserExistsInDatasource(userModel.getUsername())) {
-            userRepository.save(userModel);
+            throw new UserExistsException("User with this name already exists");
         }
 
-        throw new UserExistsException("User with this name already exists");
+        userRepository.save(userModel);
     }
 
     private boolean isUserExistsInDatasource(String username) {
