@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @author Piotr Krzyminski (piotr.krzyminski@hycom.pl)
+ * @author Piotr Krzyminski
  */
 @Entity
 @Table(name = "user")
