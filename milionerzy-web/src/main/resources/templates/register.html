@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Milionerzy | Rejestracta</title>
+</head>
+<body>
+    <h1>Rejestracja</h1>
+    <a href="/" th:href="@{/}">Back to main page</a>
+
+    <form th:action="@{/register}" method="post">
+        <input type="text" name="j_username" placeholder="Username">
+        <input type="password" name="j_password" placeholder="Password">
+        <input type="submit" value="Rejestracja">
+    </form>
+</body>
+</html>

@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Piotr Krzyminski
  */
 @SpringBootApplication
-public class WebTestApplication {
+public class WebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WebTestApplication.class, args);
+        SpringApplication.run(WebApplication.class, args);
     }
 }
