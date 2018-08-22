@@ -38,6 +38,6 @@ public class DefaultUserService implements UserService {
     }
 
     private boolean isUserExistsInDatasource(String username) {
-        return userRepository.findByUsername(username) == null ? false : true;
+        return userRepository.findByUsername(username) != null;
     }
 }
