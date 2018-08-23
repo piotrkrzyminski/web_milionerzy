@@ -8,9 +8,11 @@
     <h1>Rejestracja</h1>
     <a href="/" th:href="@{/}">Back to main page</a>
 
-    <form th:action="@{/register}" method="post">
-        <input type="text" name="j_username" placeholder="Username">
-        <input type="password" name="j_password" placeholder="Password">
+    <p th:text="${error}" style="color: red;"></p>
+
+    <form th:action="@{/register}" th:method="post" th:object="${user}">
+        <input type="text" placeholder="Username" th:field="*{username}">
+        <input type="password" placeholder="Password" th:field="*{password}">
         <input type="submit" value="Rejestracja">
     </form>
 </body>

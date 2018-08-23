@@ -1,4 +1,4 @@
-package pl.milionerzy.data.facades.user;
+package pl.milionerzy.facades.user;
 
 import pl.milionerzy.core.services.exceptions.UserExistsException;
 import pl.milionerzy.data.user.RegisterData;

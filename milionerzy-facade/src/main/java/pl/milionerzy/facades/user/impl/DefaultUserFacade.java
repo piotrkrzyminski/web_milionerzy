@@ -1,13 +1,12 @@
-package pl.milionerzy.data.facades.user.impl;
+package pl.milionerzy.facades.user.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
 import pl.milionerzy.core.services.user.UserService;
-import pl.milionerzy.data.facades.user.UserFacade;
 import pl.milionerzy.data.user.RegisterData;
+import pl.milionerzy.facades.user.UserFacade;
 import pl.milionerzy.model.user.UserModel;
 
 import static org.apache.commons.lang3.Validate.notNull;
@@ -20,8 +19,6 @@ import static org.apache.commons.lang3.Validate.notNull;
 @Component
 public class DefaultUserFacade implements UserFacade {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultUserFacade.class);
-
     private UserService userService;
 
     @Autowired
@@ -32,13 +29,14 @@ public class DefaultUserFacade implements UserFacade {
     @Override
     public void register(RegisterData data) throws UserExistsException {
 
-        notNull(data.getUsername(), "Username cannot be null");
-        notNull(data.getPassword(), "Password cannot be null");
+        notNull(data, "Register data is empty");
+        Assert.hasText(data.getUsername(), "Username cannot be empty");
+        Assert.hasText(data.getPassword(), "Password cannot be empty");
 
-        UserModel user = new UserModel();
-        user.setUsername(data.getUsername());
-        user.setPassword(data.getPassword());
+        UserModel newUser = new UserModel();
+        newUser.setUsername(data.getUsername());
+        newUser.setPassword(data.getPassword());
 
-        userService.register(user);
+        userService.register(newUser);
     }
 }
