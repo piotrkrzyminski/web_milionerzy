@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.milionerzy.core.repository.user.UserRepository;
+import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
 import pl.milionerzy.core.services.user.UserService;
 import pl.milionerzy.model.user.UserModel;
@@ -35,6 +36,22 @@ public class DefaultUserService implements UserService {
         }
 
         userRepository.save(userModel);
+    }
+
+    @Override
+    public UserModel authenticate(UserModel userModel) throws AuthenticationException {
+        LOG.debug("Performing user authentication");
+
+        UserModel user = userRepository.findByUsername(userModel.getUsername());
+
+        if(user != null) {
+            if(user.getPassword().equals(userModel.getPassword())) {
+                LOG.debug("User successfully authenticated");
+                return user;
+            }
+        }
+
+        throw new AuthenticationException("Bad credentials");
     }
 
     private boolean isUserExistsInDatasource(String username) {
