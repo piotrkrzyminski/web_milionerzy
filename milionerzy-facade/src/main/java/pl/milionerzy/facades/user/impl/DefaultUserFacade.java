@@ -1,13 +1,17 @@
 package pl.milionerzy.facades.user.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
 import pl.milionerzy.core.services.user.UserService;
-import pl.milionerzy.data.user.RegisterData;
+import pl.milionerzy.data.user.CredentialData;
 import pl.milionerzy.facades.user.UserFacade;
 import pl.milionerzy.model.user.UserModel;
+
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -27,16 +31,43 @@ public class DefaultUserFacade implements UserFacade {
     }
 
     @Override
-    public void register(RegisterData data) throws UserExistsException {
+    public void register(CredentialData data) throws UserExistsException {
 
+        validateData(data);
+
+        UserModel newUser = createUserInstance(data);
+
+        userService.register(newUser);
+    }
+
+    @Override
+    public void login(String username, String password) throws AuthenticationException {
+
+        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
+            throw new AuthenticationException("Username and password cannot be empty");
+
+        userService.authenticate(createUserInstance(username, password));
+    }
+
+    private void validateData(CredentialData data) {
         notNull(data, "Register data is empty");
         Assert.hasText(data.getUsername(), "Username cannot be empty");
         Assert.hasText(data.getPassword(), "Password cannot be empty");
+    }
 
-        UserModel newUser = new UserModel();
-        newUser.setUsername(data.getUsername());
-        newUser.setPassword(data.getPassword());
+    private UserModel createUserInstance(CredentialData data) {
+        UserModel user = new UserModel();
+        user.setUsername(data.getUsername());
+        user.setPassword(data.getPassword());
 
-        userService.register(newUser);
+        return user;
+    }
+
+    private UserModel createUserInstance(String username, String password) {
+        UserModel user = new UserModel();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        return user;
     }
 }

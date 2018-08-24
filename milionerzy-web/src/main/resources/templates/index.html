@@ -5,9 +5,10 @@
     <title>Milionerzy</title>
 </head>
 <body>
+    <p th:if="${param.logout}">Uzytkownik został wylogowany</p>
     <h1>Milionerzy</h1>
-    <a href="/home" th:href="@{/home}">Play game</a>
-    <a href="/register" th:href="@{/register}">Register</a>
-    <a href="/about" th:href="@{/about}">About</a>
+    <a href="/login" th:href="@{/login}">Zagraj</a>
+    <a href="/register" th:href="@{/register}">Rejestracja</a>
+    <a href="/about" th:href="@{/about}">O grze</a>
 </body>
 </html>

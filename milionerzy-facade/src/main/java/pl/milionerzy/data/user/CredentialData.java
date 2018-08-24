@@ -3,7 +3,7 @@ package pl.milionerzy.data.user;
 /**
  * @author Piotr Krzyminski
  */
-public class RegisterData {
+public class CredentialData {
 
     private String username;
 

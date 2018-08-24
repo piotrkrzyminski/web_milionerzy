@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.milionerzy.core.repository.user.UserRepository;
+import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
 import pl.milionerzy.model.user.UserModel;
 
@@ -59,5 +60,42 @@ public class DefaultUserServiceTest {
         when(userRepository.findByUsername(NAME)).thenReturn(dummyUser); // user already exists
 
         userService.register(dummyUser);
+    }
+
+    /**
+     * Test user authentication while user exists in database and data are proper.
+     * Should be finished with success.
+     */
+    @Test
+    public void testAuthenticateSuccess() throws AuthenticationException {
+        when(userRepository.findByUsername(NAME)).thenReturn(dummyUser); // user is registered
+
+        userService.authenticate(dummyUser);
+    }
+
+    /**
+     * Test user authentication when user was not registered.
+     * Should end with fail.
+     */
+    @Test(expected = AuthenticationException.class)
+    public void testAuthenticationWhenUserNotExists() throws AuthenticationException {
+        when(userRepository.findByUsername(NAME)).thenReturn(null); // user is not registered
+
+        userService.authenticate(dummyUser);
+    }
+
+    /**
+     * Test user authentication when user exists but password is incorrect.
+     * Should fail.
+     */
+    @Test(expected = AuthenticationException.class)
+    public void testAuthenticationWhenPasswordisIncorrect() throws AuthenticationException {
+        when(userRepository.findByUsername(NAME)).thenReturn(dummyUser); // user is registered
+
+        UserModel user = new UserModel();
+        user.setPassword("qwe");
+        user.setUsername(NAME);
+
+        userService.authenticate(user);
     }
 }

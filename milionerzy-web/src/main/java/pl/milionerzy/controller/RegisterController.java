@@ -9,11 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.milionerzy.data.user.RegisterData;
+import pl.milionerzy.data.user.CredentialData;
 import pl.milionerzy.facades.user.UserFacade;
 
 import javax.validation.Valid;
 
+/**
+ * Controller for registration page.
+ *
+ * @author Piotr Krzyminski
+ */
 @Controller
 @RequestMapping(value = "/register")
 public class RegisterController {
@@ -30,7 +35,7 @@ public class RegisterController {
     @GetMapping
     public String getRegister(Model model) {
 
-        model.addAttribute("user", new RegisterData());
+        model.addAttribute("user", new CredentialData());
 
         return "register";
     }
@@ -39,7 +44,7 @@ public class RegisterController {
     public String registerUserAccount(
             Model model,
             @ModelAttribute("user")
-            @Valid RegisterData data) {
+            @Valid CredentialData data) {
 
         try {
             userFacade.register(data);

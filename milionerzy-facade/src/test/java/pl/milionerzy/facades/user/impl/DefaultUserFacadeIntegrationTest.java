@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.milionerzy.core.repository.user.UserRepository;
+import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
-import pl.milionerzy.data.user.RegisterData;
+import pl.milionerzy.data.user.CredentialData;
 import pl.milionerzy.model.user.UserModel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Piotr Krzyminski
@@ -24,19 +25,21 @@ public class DefaultUserFacadeIntegrationTest {
 
     private static final String NAME = "test";
 
+    private static final String PASS = "qwerty";
+
     @Autowired
     private DefaultUserFacade userFacade;
 
     @Autowired
     private UserRepository userRepository;
 
-    private RegisterData data;
+    private CredentialData data;
 
     @Before
     public void init() {
-        data = new RegisterData();
+        data = new CredentialData();
         data.setUsername(NAME);
-        data.setPassword("qwerty");
+        data.setPassword(PASS);
 
         userRepository.deleteAll(); // clear table before test
     }
@@ -60,7 +63,7 @@ public class DefaultUserFacadeIntegrationTest {
     public void testRegisterUserFailed() throws UserExistsException {
         UserModel user = new UserModel();
         user.setUsername(NAME);
-        user.setPassword("qwerty");
+        user.setPassword(PASS);
 
         userRepository.save(user); // user with name 'test' exists in database
 
@@ -96,5 +99,52 @@ public class DefaultUserFacadeIntegrationTest {
         data.setPassword("");
 
         userFacade.register(data);
+    }
+
+    /**
+     * Test user login ended with success.
+     */
+    @Test
+    public void testLoginUserSuccess() throws AuthenticationException {
+        UserModel user = new UserModel();
+        user.setUsername(NAME);
+        user.setPassword(PASS);
+
+        userRepository.save(user);
+
+        userFacade.login(NAME, PASS);
+    }
+
+    /**
+     * Test user login when username is empty.
+     * Should failed.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testLoginEmptyUsername() throws AuthenticationException {
+        userFacade.login("", PASS);
+    }
+
+    /**
+     * Test user login when password is empty.
+     * Should failed.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testLoginEmptyPassowrd() throws AuthenticationException {
+        userFacade.login(NAME, "");
+    }
+
+    /**
+     * Test user login when password is incorrect.
+     * Should failed.
+     */
+    @Test(expected = AuthenticationException.class)
+    public void testLoginBadPassword() throws AuthenticationException {
+        UserModel user = new UserModel();
+        user.setUsername(NAME);
+        user.setPassword(PASS);
+
+        userRepository.save(user);
+
+        userFacade.login(NAME, "degreg");
     }
 }
