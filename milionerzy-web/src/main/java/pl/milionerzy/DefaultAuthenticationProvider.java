@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -38,9 +39,9 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
         try {
             userFacade.login(username, password);
-        } catch (pl.milionerzy.core.services.exceptions.AuthenticationException e) {
+        } catch (Exception e) {
             LOG.warn(e.getMessage());
-            return null;
+            throw new BadCredentialsException(e.getMessage());
         }
 
         return new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList());

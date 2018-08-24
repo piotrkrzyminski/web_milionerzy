@@ -1,5 +1,6 @@
 package pl.milionerzy.facades.user.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -42,8 +43,8 @@ public class DefaultUserFacade implements UserFacade {
     @Override
     public void login(String username, String password) throws AuthenticationException {
 
-        Assert.hasText(username, "Username cannot be empty");
-        Assert.hasText(password, "Password cannot be empty");
+        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
+            throw new AuthenticationException("Username and password cannot be empty");
 
         userService.authenticate(createUserInstance(username, password));
     }
