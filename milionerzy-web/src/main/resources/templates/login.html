@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Milionerzy | Logowanie</title>
+</head>
+<body>
+<h1>Panel logowania</h1>
+<a th:href="@{/}">Powrót do strony głównej</a>
+<p th:if="${param.error}">Podane dane są niepoprawne</p>
+<p th:if="${param.logout}">Użytkownik został wylogowany</p>
+<form method="post" th:action="@{/login}">
+    <input type="text" name="j_username" placeholder="Login">
+    <input type="password" name="j_password" placeholder="Hasło">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="submit" value="Zaloguj się">
+</form>
+</body>
+</html>
