@@ -1,9 +1,9 @@
 package pl.milionerzy.core.services.exceptions;
 
 /**
- * @author Piotr Krzyminski
- *
  * Exception thrown when trying to register user who's already exists in datasource.
+ *
+ * @author Piotr Krzyminski
  */
 public class UserExistsException extends Exception {
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.milionerzy.core.repository.user.UserRepository;
 import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
+import pl.milionerzy.core.services.exceptions.UserNotExistsException;
 import pl.milionerzy.core.services.user.UserService;
 import pl.milionerzy.model.user.UserModel;
 
@@ -44,14 +45,27 @@ public class DefaultUserService implements UserService {
 
         UserModel user = userRepository.findByUsername(userModel.getUsername());
 
-        if(user != null) {
-            if(user.getPassword().equals(userModel.getPassword())) {
+        if (user != null) {
+            if (user.getPassword().equals(userModel.getPassword())) {
                 LOG.debug("User successfully authenticated");
                 return user;
             }
         }
 
         throw new AuthenticationException("Bad credentials");
+    }
+
+    @Override
+    public UserModel getUserByUsername(String username) throws UserNotExistsException {
+
+        LOG.debug("Searching for user with username " + username);
+
+        UserModel user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotExistsException("User with name " + username + " was not found");
+        }
+
+        return user;
     }
 
     private boolean isUserExistsInDatasource(String username) {

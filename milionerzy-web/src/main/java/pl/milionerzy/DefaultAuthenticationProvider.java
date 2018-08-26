@@ -14,9 +14,9 @@ import pl.milionerzy.facades.user.UserFacade;
 import java.util.Collections;
 
 /**
- * @author Piotr Krzyminski
- *
  * Default authetication provider for login.
+ *
+ * @author Piotr Krzyminski
  */
 @Component
 public class DefaultAuthenticationProvider implements AuthenticationProvider {

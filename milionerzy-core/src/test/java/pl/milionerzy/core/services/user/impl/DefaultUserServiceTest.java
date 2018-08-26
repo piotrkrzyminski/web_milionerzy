@@ -5,11 +5,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.Assert;
 import pl.milionerzy.core.repository.user.UserRepository;
 import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
+import pl.milionerzy.core.services.exceptions.UserNotExistsException;
 import pl.milionerzy.model.user.UserModel;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -97,5 +100,24 @@ public class DefaultUserServiceTest {
         user.setUsername(NAME);
 
         userService.authenticate(user);
+    }
+
+    /**
+     * Test find user by username in datasource.
+     */
+    @Test
+    public void testGetUserByUsernameSuccess() throws UserNotExistsException {
+        when(userRepository.findByUsername(NAME)).thenReturn(dummyUser);
+
+        UserModel result = userService.getUserByUsername(NAME);
+
+        Assert.notNull(result);
+    }
+
+    @Test(expected = UserNotExistsException.class)
+    public void testGetUserByUsernameFailed() throws UserNotExistsException {
+        when(userRepository.findByUsername(any())).thenReturn(null); // user not found
+
+        userService.getUserByUsername(NAME); // should throw exception
     }
 }

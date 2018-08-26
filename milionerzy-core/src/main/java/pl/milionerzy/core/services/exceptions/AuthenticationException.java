@@ -1,9 +1,9 @@
 package pl.milionerzy.core.services.exceptions;
 
 /**
- * @author Piotr Krzyminski
+ * Exception thrown when user cannot be authenticated.
  *
- * Exception thrown when user cannot be authentificated.
+ * @author Piotr Krzyminski
  */
 public class AuthenticationException extends Exception {
 

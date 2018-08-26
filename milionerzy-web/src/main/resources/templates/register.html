@@ -5,16 +5,16 @@
     <title>Milionerzy | Rejestracta</title>
 </head>
 <body>
-    <h1>Rejestracja</h1>
-    <a href="/" th:href="@{/}">Powrót do strony głównej</a>
+<h1>Rejestracja</h1>
+<a href="/" th:href="@{/}">Powrót do strony głównej</a>
 
-    <p th:text="${error}" style="color: red;"></p>
+<p th:text="${error}" style="color: red;"></p>
 
-    <form th:action="@{/register}" th:method="post" th:object="${user}">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <input type="text" placeholder="Username" th:field="*{username}">
-        <input type="password" placeholder="Password" th:field="*{password}">
-        <input type="submit" value="Rejestracja">
-    </form>
+<form th:action="@{/register}" th:method="post" th:object="${user}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="text" placeholder="Username" th:field="*{username}">
+    <input type="password" placeholder="Password" th:field="*{password}">
+    <input type="submit" value="Rejestracja">
+</form>
 </body>
 </html>
