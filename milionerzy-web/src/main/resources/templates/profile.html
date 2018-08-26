@@ -2,13 +2,16 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Milionerzy | Profil</title>
 </head>
 <body>
 <h1>Profile page</h1>
 <form th:action="@{/logout}" method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <input type="submit" value="Wyloguj się">
+    <p th:text="${user.username}">anonymous</p><input type="submit" value="Wyloguj się">
 </form>
+<a href="#">Nowa gra</a>
+<a href="#">Dodaj pytanie</a>
+<a href="#">Najlepsi gracze</a>
 </body>
 </html>

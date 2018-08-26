@@ -3,11 +3,11 @@ package pl.milionerzy.facades.user;
 import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
 import pl.milionerzy.data.user.CredentialData;
-import pl.milionerzy.model.user.UserModel;
-
-import java.nio.file.attribute.UserPrincipalNotFoundException;
+import pl.milionerzy.data.user.UserData;
 
 /**
+ * This facade add mechanism for user management.
+ *
  * @author Piotr Krzyminski
  */
 public interface UserFacade {
@@ -28,4 +28,12 @@ public interface UserFacade {
      * @throws AuthenticationException user cannot be authenticated.
      */
     void login(String username, String password) throws AuthenticationException;
+
+    /**
+     * Finds user by username.
+     *
+     * @param username name of user.
+     * @return user object.
+     */
+    UserData getUserByUsername(String username);
 }

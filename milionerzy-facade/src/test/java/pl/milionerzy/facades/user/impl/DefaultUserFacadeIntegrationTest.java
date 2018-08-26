@@ -10,14 +10,15 @@ import pl.milionerzy.core.repository.user.UserRepository;
 import pl.milionerzy.core.services.exceptions.AuthenticationException;
 import pl.milionerzy.core.services.exceptions.UserExistsException;
 import pl.milionerzy.data.user.CredentialData;
+import pl.milionerzy.data.user.UserData;
 import pl.milionerzy.model.user.UserModel;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
- * @author Piotr Krzyminski
- *
  * Test user facade functionality.
+ *
+ * @author Piotr Krzyminski
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -119,7 +120,7 @@ public class DefaultUserFacadeIntegrationTest {
      * Test user login when username is empty.
      * Should failed.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AuthenticationException.class)
     public void testLoginEmptyUsername() throws AuthenticationException {
         userFacade.login("", PASS);
     }
@@ -128,7 +129,7 @@ public class DefaultUserFacadeIntegrationTest {
      * Test user login when password is empty.
      * Should failed.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AuthenticationException.class)
     public void testLoginEmptyPassowrd() throws AuthenticationException {
         userFacade.login(NAME, "");
     }
@@ -146,5 +147,33 @@ public class DefaultUserFacadeIntegrationTest {
         userRepository.save(user);
 
         userFacade.login(NAME, "degreg");
+    }
+
+    /**
+     * Test find user by name, when exists in datasource.
+     */
+    @Test
+    public void testGetUserByUsernameSuccess() {
+        UserModel user = new UserModel();
+        user.setUsername(NAME);
+        user.setPassword(PASS);
+
+        userRepository.save(user);
+
+        UserData result = userFacade.getUserByUsername(NAME);
+
+        assertNotNull(result);
+        assertEquals(NAME, result.getUsername());
+    }
+
+    /**
+     * Test find user by username when user not exists in datasource.
+     * Should return null.
+     */
+    @Test
+    public void testGetUserByUsernameNotFound() {
+        UserData data = userFacade.getUserByUsername(NAME);
+
+        assertNull(data);
     }
 }
